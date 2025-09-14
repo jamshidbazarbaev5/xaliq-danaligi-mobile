@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useTheme} from '../context/ThemeContext';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import Layout from '../components/Layout';
 import {ArrowLeft} from 'react-native-feather';
 import {useNavigation} from '@react-navigation/native';
 import { useEffect, useState } from 'react';
@@ -21,14 +21,23 @@ interface Developer {
 const DevelopersScreen = () => {
   const {theme} = useTheme();
   const navigation = useNavigation();
-  const [developers,setDevelopers] = useState<any>([]) 
+    const [developers, setDevelopers] = useState<Developer[]>([])
 
-  useEffect(()=>{
+
+    useEffect(()=>{
     const fetchDevelopers = async ()=>{
       try {
-        const developers = await developersApi.getDevelopers()
-        console.log('API Response:', developers)
-        setDevelopers(developers.results)
+          const BASE_URL = 'https://xaliq-danaligi.uz:8000';
+         const response = await fetch(`${BASE_URL}/api/developers/`, {
+           headers: {
+             'Accept': 'application/json',
+             'Content-Type': 'application/json'
+           }
+         });
+         
+         const data = await response.json();
+         console.log('API Response:', data);
+         setDevelopers(data.results);
       } catch (error) {
         console.error('Error fetching developers:', error)
       }
@@ -37,18 +46,18 @@ const DevelopersScreen = () => {
     fetchDevelopers()
   },[])
 
+
+
   console.log(developers)
 
   return (
     <>
-      <SafeAreaView
-        style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-           
+      <Layout style={styles.container}>
         <ScrollView style={styles.scrollView}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{marginBottom: 16}}>
+        {/* <TouchableOpacity onPress={() => navigation.goBack()} style={{marginBottom: 16}}>
                     <ArrowLeft stroke={theme.textColor} width={24} height={24} />
-                  </TouchableOpacity>
-          {developers.map((developer:any, index:any) => (
+                  </TouchableOpacity> */}
+          {developers?.map((developer:any, index:any) => (
             <View
               key={index}
               style={[
@@ -65,7 +74,7 @@ const DevelopersScreen = () => {
             </View>
           ))}
         </ScrollView>
-      </SafeAreaView>
+      </Layout>
     </>
   );
 };

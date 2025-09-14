@@ -6,8 +6,13 @@ import { ChevronRight, Trash2 } from "react-native-feather"
 import { useTheme } from "../context/ThemeContext"
 import { useLanguage } from "../context/LanguageContext"
 import { useSettings } from "../context/SettingsContext"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { Poem, Writer } from "../types/navigation"
+import Layout from "../components/Layout"
+import type { Poem, Writer } from "../types/navigation";
+
+interface ExtendedPoem extends Poem {
+    epubUrl?: string;
+    currentPage?: number;
+}
 import ConfirmationModal from "../components/ConfirmationModal"
 import { useState } from "react"
 import { CompositeNavigationProp } from '@react-navigation/native'
@@ -21,6 +26,12 @@ type TabParamList = {
 };
 
 type WritersStackParamList = {
+    AdvancedEpubReader: {
+        title: string;
+        epubUrl: string;
+        bookId: number;
+        initialPage?: number;
+    };
     WritersList: undefined;
     WriterDetail: { writer: Writer };
     Poem: { poem: Poem; writer: Writer };
@@ -29,7 +40,9 @@ type WritersStackParamList = {
 type NavigationProp = CompositeNavigationProp<
     BottomTabNavigationProp<TabParamList>,
     NativeStackNavigationProp<WritersStackParamList>
->;
+> & {
+    navigate: (name: string, params: { screen: string; params: any }) => void;
+};
 
 const FavouritesScreen = () => {
     const navigation = useNavigation<NavigationProp>()
@@ -72,7 +85,7 @@ const FavouritesScreen = () => {
     }
     
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}> 
+        <Layout style={styles.container}>
             <Text style={[styles.title, { color: theme.textColor }]}>{translations.favorites}</Text>
             <ScrollView showsVerticalScrollIndicator={false}>
                 {favorites.length === 0 ? (
@@ -83,7 +96,8 @@ const FavouritesScreen = () => {
                     </View>
                 ) : (
                     <View style={styles.favoritesContainer}>
-                        {favorites.map(({ poem, writer }) => {
+                        {favorites.map(({ poem: basePoem, writer }) => {
+                            const poem = basePoem as ExtendedPoem;
                             const isBookPage = poem && poem.title && poem.title.includes('Page ');
                             const animatedStyle = animations[poem.id]
                                 ? {
@@ -96,13 +110,14 @@ const FavouritesScreen = () => {
                                     <TouchableOpacity
                                         style={{ flex: 1 }}
                                         onPress={() => {
-                                            if (isBookPage) {
+                                            if (isBookPage && poem.epubUrl) {
                                                 navigation.navigate('Writers', {
                                                     screen: 'AdvancedEpubReader',
                                                     params: {
                                                         title: writer.name,
                                                         epubUrl: poem.epubUrl,
-                                                        initialPage: poem.id,
+                                                        bookId: poem.id,
+                                                        initialPage: poem.currentPage || 0,
                                                     }
                                                 });
                                             } 
@@ -143,7 +158,7 @@ const FavouritesScreen = () => {
                 onConfirm={handleConfirmDelete}
                 onCancel={() => setPoemToDelete(null)}
             />
-        </SafeAreaView>
+        </Layout>
     )
 }
 
@@ -156,7 +171,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         paddingHorizontal: 16,
         paddingTop: 16,
-        marginBottom: 16,
+        // marginBottom: 16,
     },
     emptyContainer: {
         flex: 1,

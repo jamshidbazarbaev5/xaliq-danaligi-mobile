@@ -1,6 +1,25 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createStackNavigator } from "@react-navigation/stack"
+import FavoritesIcon from "./src/components/FavoritesIcon";
+import { Writer } from './src/types/navigation'
+
+export type RootStackParamList = {
+  WritersList: undefined;
+  WriterDetail: { writer: Writer };
+  Poem: undefined;
+  CategoryBooks: { categoryId: number; categoryName: string };
+  Riddle: undefined;
+  NationalWritings: undefined;
+  AdvancedEpubReader: { bookUrl: string; bookTitle: string };
+  Introduction: undefined;
+  Developers: undefined;
+  Favorites: undefined;
+  Settings: undefined;
+  MainTabs: undefined;
+
+
+}
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { ThemeProvider, useTheme } from './src/context/ThemeContext.tsx'
@@ -23,9 +42,11 @@ import IntroductionScreen from "./src/screens/IntroductionScreen"
 import RiddleScreen from './src/screens/RiddleScreen'
 import AdvancedEpubReaderScreen from './src/screens/AdvancedEpubReaderScreen'
 import { useFirstLaunch } from "./src/hooks/useFirstLaunch"
+import CategoryBooksScreen from "./src/screens/CategoryBookScreen.tsx"
+import FavouritesScreen from "./src/screens/FavouritesScreen.tsx";
 
 const Tab = createBottomTabNavigator()
-const Stack = createStackNavigator()
+const Stack = createStackNavigator<RootStackParamList>()
 
 function WritersStack() {
   const { theme } = useTheme()
@@ -49,13 +70,19 @@ function WritersStack() {
         <Stack.Screen
             name="WriterDetail"
             component={WriterDetailScreen}
-            options={({ route }) => ({ title: route.params?.writer?.name_cyr })}
+            options={({ route: { params } }) => ({ title: params?.writer?.name_cyr })}
         />
         <Stack.Screen
             name="Poem"
             component={PoemScreen}
             options={{ headerShown: false }}
         />
+         <Stack.Screen
+            name="CategoryBooks"
+            component={CategoryBooksScreen}
+            options={({ route: { params } }) => ({ title: params?.categoryName })}
+        />
+
         <Stack.Screen
             name="Riddle"
             component={RiddleScreen}
@@ -94,11 +121,12 @@ function TabNavigator() {
                 return <Users stroke={color} width={iconSize} height={iconSize} />
               } else if (route.name === "Books") {
                 return <Book stroke={color} width={iconSize} height={iconSize} />
-              } else if (route.name === "Favorites") {
+              } else if (route.name === "NationalWritings") {
+                return <Globe stroke={color} width={iconSize} height={iconSize} />
+              } else if (route.name === "Favourites") {
                 return <Heart stroke={color} width={iconSize} height={iconSize} />
-              } else if (route.name === "Settings") {
-                return <Settings stroke={color} width={iconSize} height={iconSize} />
               }
+              
             },
             tabBarActiveTintColor: theme.accentColor,
             tabBarInactiveTintColor: theme.secondaryTextColor,
@@ -136,29 +164,71 @@ function TabNavigator() {
             component={BookListScreen}
             options={{ tabBarLabel: translations.books }}
         />
+         <Tab.Screen
+            name="NationalWritings"
+            component={NationalWritingsScreen}
+            options={{ tabBarLabel: translations.nationalWritings }}
+        />  
         <Tab.Screen
-            name="Favorites"
-            component={FavoritesScreen}
-            options={{ tabBarLabel: translations.favorites }}
-        />
-        <Tab.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{ tabBarLabel: translations.settings }}
+            name="Favourites"
+            component={FavouritesScreen}
+            options={{ tabBarLabel: translations.favoritesTitle }}
         />
         {/* <Tab.Screen name="ss" component={ss} /> */}
         {/* <Tab.Screen name="Bookmarks" component={BookmarksScreen} /> */}
-
-        <Tab.Screen
-            name="Developers"
-            component={DevelopersScreen}
-            options={{
-              tabBarStyle: { display: 'none' },
-              tabBarItemStyle: { display: 'none' }
-            }}
-        />
       </Tab.Navigator>
   )
+}
+
+function MainStack() {
+  const { theme } = useTheme();
+  const { translations } = useLanguage();
+
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: theme.cardBackground,
+        },
+        headerTintColor: theme.textColor,
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    >
+      <Stack.Screen 
+        name="MainTabs" 
+        component={TabNavigator} 
+        options={{ 
+          headerShown: true, 
+          headerTitle: "Xaliq danaliġi",
+          headerRight: () => <FavoritesIcon />,
+        }} 
+      />
+      <Stack.Screen 
+        name="Favorites" 
+        component={FavoritesScreen} 
+        options={{
+          headerTitle: translations.favorites
+        }}
+      />
+      <Stack.Screen 
+        name="Settings" 
+        component={SettingsScreen} 
+        options={{
+          headerTitle: translations.settings
+        }}
+      />
+       <Stack.Screen 
+        name="Developers" 
+        component={DevelopersScreen} 
+        options={{
+          headerTitle: translations.developers
+        }}
+       
+      />
+    </Stack.Navigator>
+  );
 }
 
 export default function App() {
@@ -170,7 +240,7 @@ export default function App() {
               <LanguageProvider>
                 <NetworkProvider>
                   <NavigationContainer>
-                    <TabNavigator />
+                    <MainStack />
                     <RefreshButton />
                   </NavigationContainer>
                 </NetworkProvider>

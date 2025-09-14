@@ -5,7 +5,7 @@ import { Moon, Sun, Type, Check, Info, Users, ChevronRight, Type as ScriptIcon }
 import { useTheme } from "../context/ThemeContext"
 import { useLanguage } from "../context/LanguageContext"
 import { useSettings } from "../context/SettingsContext"
-import { SafeAreaView } from "react-native-safe-area-context"
+import Layout from "../components/Layout"
 import { useNavigation } from "@react-navigation/native"
 import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs"
 import { useRef, useEffect } from "react"
@@ -59,7 +59,7 @@ const SettingsScreen = () => {
   }, [isDarkMode])
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <Layout style={styles.container}>
       <Text style={[styles.title, { color: theme.textColor }]}>{translations.settings}</Text>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
@@ -206,6 +206,27 @@ const SettingsScreen = () => {
                 </View>
               )}
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.settingItem,
+                {
+                  backgroundColor: theme.cardBackground,
+                  shadowColor: isDarkMode ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0.1)",
+                },
+              ]}
+              onPress={() => changeLanguage("kk")}
+              activeOpacity={0.7}
+            >
+              <View style={styles.settingInfo}>
+                <Text style={[styles.settingText, { color: theme.textColor, fontSize }]}>Qaraqalpaqsha</Text>
+              </View>
+              {language === "kk" && (
+                <View style={[styles.checkCircle, { backgroundColor: theme.accentColor }]}>
+                  <Check stroke="white" width={16} height={16} />
+                </View>
+              )}
+            </TouchableOpacity>
           </View>
 
           <View style={styles.sectionDivider} />
@@ -229,7 +250,7 @@ const SettingsScreen = () => {
               <Text style={[styles.versionText, { color: theme.secondaryTextColor, fontSize }]}>1.0.0</Text>
             </View>
 
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={[
                 styles.settingItem,
                 {
@@ -249,11 +270,11 @@ const SettingsScreen = () => {
               <View style={styles.chevronContainer}>
                 <ChevronRight stroke={theme.accentColor} width={22} height={22} />
               </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         </Animated.View>
       </ScrollView>
-    </SafeAreaView>
+    </Layout>
   )
 }
 

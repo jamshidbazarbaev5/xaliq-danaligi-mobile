@@ -30,7 +30,7 @@ export interface BooksResponse {
 }
 
 export class BooksApi extends BaseApi {
-  private endpoint = '/books';
+  private endpoint = '/folklore';
 
   async getBooks(): Promise<BooksResponse> {
     const response = await this.api.get<BooksResponse>(this.endpoint);

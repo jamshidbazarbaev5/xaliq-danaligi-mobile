@@ -82,6 +82,7 @@ type TranslationKeys = {
 type Translations = {
     ru: TranslationKeys;
     uz: TranslationKeys;
+    kk: TranslationKeys;
 }
 
 interface LanguageContextType {
@@ -91,6 +92,86 @@ interface LanguageContextType {
 }
 
 const translations = {
+    kk: {
+        // General
+        settings: "Sazlamalar",
+        appearance: "Sırtqı kórinis",
+        theme: "Túngi rejim",
+        fontSize: "Háriplerdiń ólshemi",
+        poemFontSize: "Qosıq háripleriniń ólshemi",
+        language: "Til",
+        about: "Baǵdarlama haqqında",
+        version: "Versiya",
+        favorites: "Saylandılar",
+        noFavoritesYet: "Házirge saylandılar joq",
+        cancel: "Biykar etiw",
+        retry: "Qayta urınıw",
+        loading: "Júklenbekte...",
+        error: "Qáte",
+        availableAuthors: "Bar jazıwshılar",
+        authors: "Avtorlar",
+        page: "Bet",
+        of: "dan",
+
+        // Writers
+        writers: "Jazıwshılar",
+        writersAvailable: "jazıwshı bar",
+        browseWriters: "Jazıwshılardı kóriw",
+        searchWriters: "Jazıwshılardı izlew...",
+        noWritersFound: "Jazıwshılar tabılmadı",
+        searchAuthors: "Avtorlardı izlew...",
+        tryDifferentSearch: "Basqa sóz benen izlep kóriń yamasa betti jańalań",
+        nationalWritings: "Kategoriya",
+        searchNationalWritings: "Milliy ádebiyatlardı izlew...",
+
+        // Books & Reading
+        books: "Kitaplar",
+        searchBooks: "Kitaplardı izlew...",
+        noBooks: "Kitaplar tabılmadı",
+        bookProgress: "Oqıw barısı",
+        completed: "tamamlandı",
+        pageOf: "dan",
+        chapters: "Baplar",
+        readingSettings: "Oqıw sazlamaları",
+        viewAllBookmarks: "Barlıq belgilengenler",
+        addBookmark: "Belgi qoyıw",
+        removeBookmark: "Belgini óshiriw",
+        shareBook: "Kitaptı bólisiw",
+        loadingBook: "Kitap júklenbekte...",
+        switchScript: "Jazıwdı ózgertiw",
+
+        // Poems
+        poems: "Qosıqlar",
+        noPoems: "Qosıqlar tabılmadı",
+        keyPoints: "Tiykarǵı noqatlar",
+
+        // Content Types
+        biography: "Biografiya",
+        developers: "Baǵdarlamashılar",
+        riddles: "Jumbaqlat",
+
+        // Theme
+        darkMode: "Túngi rejim",
+        lightMode: "Jaqtı rejim",
+
+        // Script
+        script: "Álipbe",
+        latin: "Latin",
+        cyrillic: "Kirill",
+
+        // Introduction Screen
+        welcome: "Books baǵdarlamasına xosh kelipsiz",
+        welcomeSubtitle: "Siziń jeke ádebiy jardemshińiz",
+        writersCollection: "Jazıwshılar toplaması",
+        writersDescription: "Bizlerdiń úlken talantlı jazıwshılar hám olardıń shıǵarmaları toplamasın úyreniń",
+        digitalLibrary: "Sanlı kitapxana",
+        digitalLibraryDesc: "Keń kólemli kitaplar toplamasına kirisiw múmkinshiligi",
+        nationalWritingsTitle: "Milliy ádebiyat",
+        nationalWritingsDesc: "Túrli mádeniyatlardıń ádebiy shıǵarmaların ashıń",
+        favoritesTitle: "Saylandılar",
+        favoritesDesc: "Saylaǵan kontentiń saqla hám tártipke sal",
+        startExploring: "Baslaw"
+    },
     ru: {
         // General
         
@@ -120,7 +201,7 @@ const translations = {
         noWritersFound: "Писатели не найдены",
         searchAuthors: "Поиск авторов...",
         tryDifferentSearch: "Попробуйте другой поисковый запрос или обновите страницу",
-        nationalWritings: "Национальная литература",
+        nationalWritings: "Категория",
         searchNationalWritings: "Поиск национальной литературы...",
         // Books & Reading
         books: "Фольклор",
@@ -230,7 +311,7 @@ const translations = {
         // Content Types
         biography: "Biografiya",
         developers: "Dasturchilar",
-        nationalWritings: "Milliy adabiyot",
+        nationalWritings: "Kategoriya",
 
         // Theme
         darkMode: "Tungi rejim",

@@ -9,6 +9,8 @@ export interface Poem {
     year: string;
     content: string;
     audio?: string | AudioPaths;
+    epubUrl?: string;
+    currentPage?: number;
 }
 
 export interface Book {

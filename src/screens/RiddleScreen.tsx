@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Layout from '../components/Layout';
 import { useTheme } from '../context/ThemeContext';
 import { useSettings } from '../context/SettingsContext';
 import { ArrowLeft } from 'react-native-feather';
@@ -16,7 +16,7 @@ const RiddleScreen = () => {
   const [showAnswer, setShowAnswer] = useState(false);
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <Layout style={styles.container}>
       <View style={[styles.header, { backgroundColor: theme.cardBackground }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerButton}>
           <ArrowLeft stroke={theme.textColor} width={24} height={24} />
@@ -56,7 +56,7 @@ const RiddleScreen = () => {
           ))}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </Layout>
   );
 };
 

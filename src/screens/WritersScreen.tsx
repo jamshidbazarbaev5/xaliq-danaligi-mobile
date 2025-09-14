@@ -1,8 +1,9 @@
 "use client"
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { View, Text, SafeAreaView, StatusBar, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, StatusBar, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
+import Layout from '../components/Layout';
 import { useSettings, scriptEventEmitter } from '../context/SettingsContext';
 import { useLanguage } from '../context/LanguageContext';
 import { AuthorsApi } from '../api/authors';
@@ -156,32 +157,32 @@ const WritersScreen = () => {
 
     if (loading) {
         return (
-            <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.backgroundColor }]}>
+            <Layout style={styles.safeArea}>
                 <View style={styles.header}>
                     <Text style={[styles.headerTitle, { color: theme.textColor, fontSize: fontSize * 1.75 }]}>Authors</Text>
                 </View>
                 <SearchBar onSearch={setSearchQuery} placeholder="Search authors..." />
                 <SkeletonLoader />
-            </SafeAreaView>
+            </Layout>
         );
     }
 
     if (error && !writers.length) {
         return (
-            <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.backgroundColor }]}>
+            <Layout style={styles.safeArea}>
                 <View style={styles.errorContainer}>
                     <Text style={{ color: theme.textColor, fontSize: fontSize * 1.1, textAlign: 'center' }}>{error}</Text>
                     <TouchableOpacity style={[styles.retryButton, { backgroundColor: theme.accentColor }]} onPress={() => fetchWriters()}>
                         <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Retry</Text>
                     </TouchableOpacity>
                 </View>
-            </SafeAreaView>
+            </Layout>
         );
     }
 
     return (
-        <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.backgroundColor }]}>
-            <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} backgroundColor={theme.backgroundColor} />
+        <Layout style={styles.safeArea}>
+            <StatusBar barStyle={theme.isDark ? 'light-content' : 'dark-content'} backgroundColor={theme.backgroundColor} />
             
             <FlatList
                 data={filteredWriters}
@@ -210,7 +211,7 @@ const WritersScreen = () => {
                 initialNumToRender={10}
                 windowSize={21}
             />
-        </SafeAreaView>
+        </Layout>
     );
 };
 

@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Layout from '../components/Layout';
 import { useTheme } from '../context/ThemeContext';
 import { useSettings } from '../context/SettingsContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -179,17 +179,17 @@ const BookListScreen = () => {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]} edges={['top']}>
+      <Layout style={styles.container}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={theme.accentColor} />
         </View>
-      </SafeAreaView>
+      </Layout>
     );
   }
 
   if (error) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]} edges={['top']}>
+      <Layout style={styles.container}>
         <View style={styles.errorContainer}>
           <Text style={[styles.errorText, { color: theme.textColor }]}>{error}</Text>
           <TouchableOpacity 
@@ -199,7 +199,7 @@ const BookListScreen = () => {
             <Text style={styles.retryButtonText}>{translations.retry}</Text>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </Layout>
     );
   }
 
@@ -220,7 +220,7 @@ const BookListScreen = () => {
   );
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]} edges={['top']}>
+    <Layout style={styles.container}>
       <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
       
       <View style={[styles.header, { backgroundColor: theme.cardBackground }]}>
@@ -253,7 +253,7 @@ const BookListScreen = () => {
       ) : (
         <EmptyState />
       )}
-    </SafeAreaView>
+    </Layout>
   );
 };
 
